@@ -2,7 +2,7 @@
 
 #include "../Object.h"
 #include "../Resource/Resource.h"
-#include <vector>
+#include "../../Core/Events/Delegate.h"
 #include <glm/glm.hpp>
 #include <glm/gtc/quaternion.hpp>
 
@@ -48,6 +48,7 @@ namespace FakeReal {
 	};
 	FR_TYPE_MARCO(BoneKey)
 
+	typedef DelegateEvent<void> AddAnimEventType;
 	class Skeleton;
 	class FR_ENGINE_API Animation : public Object, public Resource
 	{
@@ -105,5 +106,8 @@ namespace FakeReal {
 		AnimationRPtr GetAnimation(const std::string& name) const;
 	private:
 		std::unordered_map<std::string, AnimationRPtr> mAnimArray;
+
+	public:
+		AddAnimEventType m_AddAnimEvent;
 	};
 }

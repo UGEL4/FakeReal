@@ -121,6 +121,7 @@ copy /Y "$(SolutionDir)bin\$(Configuration)-$(Platform)\$(ProjectName)\*.dll" "$
     <ClInclude Include="Source\Engine\Core\EngineMain.h" />
     <ClInclude Include="Source\Engine\Core\EntryPoint.h" />
     <ClInclude Include="Source\Engine\Core\Events\ApplicationEvent.h" />
+    <ClInclude Include="Source\Engine\Core\Events\Delegate.h" />
     <ClInclude Include="Source\Engine\Core\Events\Event.h" />
     <ClInclude Include="Source\Engine\Core\Events\KeyEvent.h" />
     <ClInclude Include="Source\Engine\Core\Events\MouseEvent.h" />

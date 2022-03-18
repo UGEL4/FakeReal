@@ -270,6 +270,9 @@
     <ClInclude Include="Source\Engine\Graphic\Anim\Animation.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Engine\Core\Events\Delegate.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Engine\Core\Application.cpp">
