@@ -1,0 +1,55 @@
+#type vertex
+#version 430 core
+layout(location = 0) in vec3 position;
+layout(location = 1) in vec3 normal;
+layout(location = 2) in vec2 texCoord;
+layout(location = 3) in vec4 weights;
+layout(location = 4) in ivec4 bones;
+
+layout (std140, binding = 0) uniform Camera
+{
+	mat4 g_ViewProjection;
+};
+
+uniform mat4 worldMat;
+uniform mat4 uMatrixPalette[100];
+
+struct OutPut
+{
+	vec2 texCoord;
+};
+
+out OutPut v_out;
+void main()
+{
+	mat4 t;
+	t  = uMatrixPalette[bones[0]] * weights[0];
+	t += uMatrixPalette[bones[1]] * weights[1];
+	t += uMatrixPalette[bones[2]] * weights[2];
+	t += uMatrixPalette[bones[3]] * weights[3];
+	vec4 pos = t * vec4(position, 1.0);
+	gl_Position = g_ViewProjection * worldMat * pos;
+	//gl_Position = g_ViewProjection * worldMat * vec4(position, 1.0);
+	v_out.texCoord = texCoord;
+}
+
+#type fragment
+#version 430 core
+
+struct OutPut
+{
+	vec2 texCoord;
+};
+
+struct Material {
+	sampler2D texture_diffuse;
+};
+uniform Material m_Material;
+
+in OutPut v_out;
+out vec4 color;
+void main()
+{
+	//color = vec4(1.0, 0.0, 0.0, 1.0);
+	color = vec4(texture2D(m_Material.texture_diffuse, v_out.texCoord));
+}

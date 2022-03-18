@@ -1,0 +1,279 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>15.0</VCProjectVersion>
+    <ProjectGuid>{98F2C32C-6B4F-4604-9643-B9D0CC9FB4A8}</ProjectGuid>
+    <RootNamespace>FakeReal</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <OutDir>$(SolutionDir)bin\$(Configuration)-$(Platform)\$(ProjectName)\</OutDir>
+    <IntDir>$(SolutionDir)bin\$(Configuration)-$(Platform)\$(ProjectName)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <OutDir>$(SolutionDir)bin\$(Configuration)-$(Platform)\$(ProjectName)\</OutDir>
+    <IntDir>$(SolutionDir)bin\$(Configuration)-$(Platform)\$(ProjectName)\</IntDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+      <ConformanceMode>false</ConformanceMode>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <AdditionalIncludeDirectories>$(SolutionDir)IMGUI\Imgui;$(SolutionDir)$(ProjectName)\External\stb_image;$(SolutionDir)$(ProjectName)\External\glm;$(SolutionDir)$(ProjectName)\External\GLFW\include;$(SolutionDir)$(ProjectName)\External\glad\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>BUILD_ENGINE_DLL;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <AdditionalLibraryDirectories>$(SolutionDir)$(ProjectName)\Lib\;$(SolutionDir)$(ProjectName)\External\GLFW\Lib\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>IMGUI.lib;glfw3.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+    <PostBuildEvent>
+      <Command>copy /Y "$(SolutionDir)bin\$(Configuration)-$(Platform)\$(ProjectName)\*.lib" "$(SolutionDir)$(ProjectName)\Lib\"
+copy /Y "$(SolutionDir)bin\$(Configuration)-$(Platform)\$(ProjectName)\*.dll" "$(SolutionDir)$(ProjectName)\Lib\"
+copy /Y "$(SolutionDir)bin\$(Configuration)-$(Platform)\$(ProjectName)\*.dll" "$(SolutionDir)bin\$(Configuration)-$(Platform)\SandBox\"</Command>
+    </PostBuildEvent>
+    <Lib>
+      <AdditionalLibraryDirectories>$(SolutionDir)$(ProjectName)\External\GLFW\Lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Lib>
+    <ProjectReference>
+      <LinkLibraryDependencies>true</LinkLibraryDependencies>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <ConformanceMode>false</ConformanceMode>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <AdditionalIncludeDirectories>$(SolutionDir)IMGUI\Imgui;$(SolutionDir)$(ProjectName)\External\stb_image;$(SolutionDir)$(ProjectName)\External\glm;$(SolutionDir)$(ProjectName)\External\GLFW\include;$(SolutionDir)$(ProjectName)\External\glad\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>BUILD_ENGINE_DLL;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalLibraryDirectories>$(SolutionDir)$(ProjectName)\Lib\;$(SolutionDir)$(ProjectName)\External\GLFW\Lib\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>IMGUI.lib;glfw3.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+    <PostBuildEvent>
+      <Command>copy /Y "$(SolutionDir)bin\$(Configuration)-$(Platform)\$(ProjectName)\*.lib" "$(SolutionDir)$(ProjectName)\Lib\"
+copy /Y "$(SolutionDir)bin\$(Configuration)-$(Platform)\$(ProjectName)\*.dll" "$(SolutionDir)$(ProjectName)\Lib\"
+copy /Y "$(SolutionDir)bin\$(Configuration)-$(Platform)\$(ProjectName)\*.dll" "$(SolutionDir)bin\$(Configuration)-$(Platform)\SandBox\"</Command>
+    </PostBuildEvent>
+    <Lib>
+      <AdditionalLibraryDirectories>$(SolutionDir)$(ProjectName)\External\GLFW\Lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Lib>
+    <ProjectReference>
+      <LinkLibraryDependencies>true</LinkLibraryDependencies>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="External\glad\include\glad\glad.h" />
+    <ClInclude Include="External\glad\include\KHR\khrplatform.h" />
+    <ClInclude Include="External\GLFW\include\GLFW\glfw3.h" />
+    <ClInclude Include="External\GLFW\include\GLFW\glfw3native.h" />
+    <ClInclude Include="External\stb_image\stb_image.h" />
+    <ClInclude Include="Source\Engine\Core\Application.h" />
+    <ClInclude Include="Source\Engine\Core\CoreMarco.h" />
+    <ClInclude Include="Source\Engine\Core\EngineMain.h" />
+    <ClInclude Include="Source\Engine\Core\EntryPoint.h" />
+    <ClInclude Include="Source\Engine\Core\Events\ApplicationEvent.h" />
+    <ClInclude Include="Source\Engine\Core\Events\Event.h" />
+    <ClInclude Include="Source\Engine\Core\Events\KeyEvent.h" />
+    <ClInclude Include="Source\Engine\Core\Events\MouseEvent.h" />
+    <ClInclude Include="Source\Engine\Core\Input\Input.h" />
+    <ClInclude Include="Source\Engine\Core\Input\KeyCode.h" />
+    <ClInclude Include="Source\Engine\Core\Input\MouseCode.h" />
+    <ClInclude Include="Source\Engine\Core\Input\OpenGLInput.h" />
+    <ClInclude Include="Source\Engine\Core\Layer\ImguiLayer.h" />
+    <ClInclude Include="Source\Engine\Core\Layer\Layer.h" />
+    <ClInclude Include="Source\Engine\Core\Layer\LayerStack.h" />
+    <ClInclude Include="Source\Engine\Core\FRMath.h" />
+    <ClInclude Include="Source\Engine\Core\Window\Window.h" />
+    <ClInclude Include="Source\Engine\Graphic\Anim\Animation.h" />
+    <ClInclude Include="Source\Engine\Graphic\CustomArchiveObject.h" />
+    <ClInclude Include="Source\Engine\Graphic\Material\Material.h" />
+    <ClInclude Include="Source\Engine\Graphic\Node\Geometry.h" />
+    <ClInclude Include="Source\Engine\Graphic\Node\GeometryNode.h" />
+    <ClInclude Include="Source\Engine\Graphic\Node\MeshNode.h" />
+    <ClInclude Include="Source\Engine\Graphic\Node\Mesh\Mesh.h" />
+    <ClInclude Include="Source\Engine\Graphic\Node\Model\Bone.h" />
+    <ClInclude Include="Source\Engine\Graphic\Node\Model\ModelMeshNode.h" />
+    <ClInclude Include="Source\Engine\Graphic\Node\Model\Skeleton.h" />
+    <ClInclude Include="Source\Engine\Graphic\Node\Model\SkeletonMeshNode.h" />
+    <ClInclude Include="Source\Engine\Graphic\Node\Model\StaticMeshNode.h" />
+    <ClInclude Include="Source\Engine\Graphic\Node\Node.h" />
+    <ClInclude Include="Source\Engine\Graphic\Node\NodeComponent\Camera\Camera.h" />
+    <ClInclude Include="Source\Engine\Graphic\Node\NodeComponent\MeshNodeComponent.h" />
+    <ClInclude Include="Source\Engine\Graphic\Node\NodeComponent\NodeComponent.h" />
+    <ClInclude Include="Source\Engine\Graphic\Node\NodeComponent\SkeletonMeshComponent.h" />
+    <ClInclude Include="Source\Engine\Graphic\Node\NodeComponent\StaticMeshNodeComponent.h" />
+    <ClInclude Include="Source\Engine\Graphic\Object.h" />
+    <ClInclude Include="Source\Engine\Graphic\Priority.h" />
+    <ClInclude Include="Source\Engine\Graphic\Resource\Resource.h" />
+    <ClInclude Include="Source\Engine\Graphic\Resource\ResourceManager.h" />
+    <ClInclude Include="Source\Engine\Graphic\Spatial.h" />
+    <ClInclude Include="Source\Engine\Graphic\Stream\EnumTrans.h" />
+    <ClInclude Include="Source\Engine\Graphic\Stream\Property.h" />
+    <ClInclude Include="Source\Engine\Graphic\Stream\Rtti.h" />
+    <ClInclude Include="Source\Engine\Graphic\Stream\Stream.h" />
+    <ClInclude Include="Source\Engine\Graphic\Stream\StreamUtil.h" />
+    <ClInclude Include="Source\Engine\Graphic\Transform.h" />
+    <ClInclude Include="Source\Engine\Graphic\World\Actor\Actor.h" />
+    <ClInclude Include="Source\Engine\Graphic\World\Actor\EditorCameraActor.h" />
+    <ClInclude Include="Source\Engine\Graphic\World\Actor\CameraActor.h" />
+    <ClInclude Include="Source\Engine\Graphic\World\Actor\SkyBox.h" />
+    <ClInclude Include="Source\Engine\Graphic\World\Actor\StaticActor.h" />
+    <ClInclude Include="Source\Engine\Graphic\World\SceneMap.h" />
+    <ClInclude Include="Source\Engine\Graphic\World\Scene\Scene.h" />
+    <ClInclude Include="Source\Engine\Graphic\World\Scene\SceneManager.h" />
+    <ClInclude Include="Source\Engine\Graphic\World\World.h" />
+    <ClInclude Include="Source\Engine\Imgui\imgui_impl_glfw.h" />
+    <ClInclude Include="Source\Engine\Imgui\imgui_impl_opengl3.h" />
+    <ClInclude Include="Source\Engine\Imgui\imgui_impl_opengl3_loader.h" />
+    <ClInclude Include="Source\Engine\Platform\OpenGL\Render\Buffer\FrameBuffer_GL.h" />
+    <ClInclude Include="Source\Engine\Platform\OpenGL\Render\Buffer\UniformBuffer_GL.h" />
+    <ClInclude Include="Source\Engine\Platform\OpenGL\Render\RenderAPI_GL.h" />
+    <ClInclude Include="Source\Engine\Platform\OpenGL\Render\Shader\Shader_GL.h" />
+    <ClInclude Include="Source\Engine\Platform\OpenGL\Window\OpenGLWindow.h" />
+    <ClInclude Include="Source\Engine\Render\Buffer\BufferLayout.h" />
+    <ClInclude Include="Source\Engine\Render\Buffer\DataBuffer.h" />
+    <ClInclude Include="Source\Engine\Render\Buffer\FrameBuffer.h" />
+    <ClInclude Include="Source\Engine\Render\Buffer\IndexBuffer.h" />
+    <ClInclude Include="Source\Engine\Render\Buffer\UniformBuffer.h" />
+    <ClInclude Include="Source\Engine\Render\Buffer\VertexArray.h" />
+    <ClInclude Include="Source\Engine\Render\Buffer\VertexBuffer.h" />
+    <ClInclude Include="Source\Engine\Render\RenderAPI.h" />
+    <ClInclude Include="Source\Engine\Render\RenderCommand.h" />
+    <ClInclude Include="Source\Engine\Render\Renderer.h" />
+    <ClInclude Include="Source\Engine\Render\RenderResource\RenderResource.h" />
+    <ClInclude Include="Source\Engine\Render\RenderResource\ResourceBind.h" />
+    <ClInclude Include="Source\Engine\Render\RenderState\SamplerState.h" />
+    <ClInclude Include="Source\Engine\Render\Shader\Shader.h" />
+    <ClInclude Include="Source\Engine\Render\Texture\FRTexture.h" />
+    <ClInclude Include="Source\Engine\Render\Texture\TextureAllState.h" />
+    <ClInclude Include="Source\Engine\Render\Texture\TextureCubeMap.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="External\glad\src\glad.c" />
+    <ClCompile Include="External\stb_image\stb_image.cpp" />
+    <ClCompile Include="Source\Engine\Core\Application.cpp" />
+    <ClCompile Include="Source\Engine\Core\EngineMain.cpp" />
+    <ClCompile Include="Source\Engine\Core\Input\Input.cpp" />
+    <ClCompile Include="Source\Engine\Core\Input\OpenGLInput.cpp" />
+    <ClCompile Include="Source\Engine\Core\Layer\ImguiLayer.cpp" />
+    <ClCompile Include="Source\Engine\Core\Layer\Layer.cpp" />
+    <ClCompile Include="Source\Engine\Core\Layer\LayerStack.cpp" />
+    <ClCompile Include="Source\Engine\Core\Window\Window.cpp" />
+    <ClCompile Include="Source\Engine\Graphic\Anim\Animation.cpp" />
+    <ClCompile Include="Source\Engine\Graphic\CustomArchiveObject.cpp" />
+    <ClCompile Include="Source\Engine\Graphic\Material\Material.cpp" />
+    <ClCompile Include="Source\Engine\Graphic\Node\Geometry.cpp" />
+    <ClCompile Include="Source\Engine\Graphic\Node\GeometryNode.cpp" />
+    <ClCompile Include="Source\Engine\Graphic\Node\MeshNode.cpp" />
+    <ClCompile Include="Source\Engine\Graphic\Node\Mesh\Mesh.cpp" />
+    <ClCompile Include="Source\Engine\Graphic\Node\Model\Bone.cpp" />
+    <ClCompile Include="Source\Engine\Graphic\Node\Model\ModelMeshNode.cpp" />
+    <ClCompile Include="Source\Engine\Graphic\Node\Model\Skeleton.cpp" />
+    <ClCompile Include="Source\Engine\Graphic\Node\Model\SkeletonMeshNode.cpp" />
+    <ClCompile Include="Source\Engine\Graphic\Node\Model\StaticMeshNode.cpp" />
+    <ClCompile Include="Source\Engine\Graphic\Node\Node.cpp" />
+    <ClCompile Include="Source\Engine\Graphic\Node\NodeComponent\Camera\Camera.cpp" />
+    <ClCompile Include="Source\Engine\Graphic\Node\NodeComponent\MeshNodeComponent.cpp" />
+    <ClCompile Include="Source\Engine\Graphic\Node\NodeComponent\NodeComponent.cpp" />
+    <ClCompile Include="Source\Engine\Graphic\Node\NodeComponent\SkeletonMeshComponent.cpp" />
+    <ClCompile Include="Source\Engine\Graphic\Node\NodeComponent\StaticMeshNodeComponent.cpp" />
+    <ClCompile Include="Source\Engine\Graphic\Object.cpp" />
+    <ClCompile Include="Source\Engine\Graphic\Priority.cpp" />
+    <ClCompile Include="Source\Engine\Graphic\Resource\Resource.cpp" />
+    <ClCompile Include="Source\Engine\Graphic\Resource\ResourceManager.cpp" />
+    <ClCompile Include="Source\Engine\Graphic\Spatial.cpp" />
+    <ClCompile Include="Source\Engine\Graphic\Stream\EnumTrans.cpp" />
+    <ClCompile Include="Source\Engine\Graphic\Stream\Rtti.cpp" />
+    <ClCompile Include="Source\Engine\Graphic\Stream\Stream.cpp" />
+    <ClCompile Include="Source\Engine\Graphic\Transform.cpp" />
+    <ClCompile Include="Source\Engine\Graphic\World\Actor\Actor.cpp" />
+    <ClCompile Include="Source\Engine\Graphic\World\Actor\EditorCameraActor.cpp" />
+    <ClCompile Include="Source\Engine\Graphic\World\Actor\CameraActor.cpp" />
+    <ClCompile Include="Source\Engine\Graphic\World\Actor\SkyBox.cpp" />
+    <ClCompile Include="Source\Engine\Graphic\World\Actor\StaticActor.cpp" />
+    <ClCompile Include="Source\Engine\Graphic\World\SceneMap.cpp" />
+    <ClCompile Include="Source\Engine\Graphic\World\Scene\Scene.cpp" />
+    <ClCompile Include="Source\Engine\Graphic\World\Scene\SceneManager.cpp" />
+    <ClCompile Include="Source\Engine\Graphic\World\World.cpp" />
+    <ClCompile Include="Source\Engine\Imgui\imgui_impl_glfw.cpp" />
+    <ClCompile Include="Source\Engine\Imgui\imgui_impl_opengl3.cpp" />
+    <ClCompile Include="Source\Engine\Platform\OpenGL\Render\Buffer\FrameBuffer_GL.cpp" />
+    <ClCompile Include="Source\Engine\Platform\OpenGL\Render\Buffer\UniformBuffer_GL.cpp" />
+    <ClCompile Include="Source\Engine\Platform\OpenGL\Render\RenderAPI_GL.cpp" />
+    <ClCompile Include="Source\Engine\Platform\OpenGL\Render\Shader\Shader_GL.cpp" />
+    <ClCompile Include="Source\Engine\Platform\OpenGL\Window\OpenGLWindow.cpp" />
+    <ClCompile Include="Source\Engine\Render\Buffer\BufferLayout.cpp" />
+    <ClCompile Include="Source\Engine\Render\Buffer\DataBuffer.cpp" />
+    <ClCompile Include="Source\Engine\Render\Buffer\FrameBuffer.cpp" />
+    <ClCompile Include="Source\Engine\Render\Buffer\IndexBuffer.cpp" />
+    <ClCompile Include="Source\Engine\Render\Buffer\UniformBuffer.cpp" />
+    <ClCompile Include="Source\Engine\Render\Buffer\VertexArray.cpp" />
+    <ClCompile Include="Source\Engine\Render\Buffer\VertexBuffer.cpp" />
+    <ClCompile Include="Source\Engine\Render\RenderAPI.cpp" />
+    <ClCompile Include="Source\Engine\Render\RenderCommand.cpp" />
+    <ClCompile Include="Source\Engine\Render\Renderer.cpp" />
+    <ClCompile Include="Source\Engine\Render\RenderResource\RenderResource.cpp" />
+    <ClCompile Include="Source\Engine\Render\RenderState\SamplerState.cpp" />
+    <ClCompile Include="Source\Engine\Render\Shader\Shader.cpp" />
+    <ClCompile Include="Source\Engine\Render\Texture\FRTexture.cpp" />
+    <ClCompile Include="Source\Engine\Render\Texture\TextureAllState.cpp" />
+    <ClCompile Include="Source\Engine\Render\Texture\TextureCubeMap.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\IMGUI\IMGUI.vcxproj">
+      <Project>{91c9ceff-45ae-408c-a17b-5357edc8ceb8}</Project>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

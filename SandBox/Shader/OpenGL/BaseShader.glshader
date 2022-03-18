@@ -1,0 +1,45 @@
+#type vertex
+#version 430 core
+
+layout(location = 0) in vec4 position;
+layout(location = 1) in vec3 normal;
+layout(location = 2) in vec2 texCoord;
+
+layout (std140, binding = 0) uniform Camera
+{
+	mat4 g_ViewProjection;
+};
+
+struct OutPut
+{
+	vec2 texCoord;
+};
+
+out OutPut v_out;
+uniform mat4 worldMat;
+void main()
+{
+	gl_Position = g_ViewProjection * worldMat * position;
+	v_out.texCoord = texCoord;
+}
+
+#type fragment
+#version 430 core
+
+struct OutPut
+{
+	vec2 texCoord;
+};
+
+struct Material {
+	sampler2D texture_diffuse;
+};
+uniform Material m_Material;
+in OutPut v_out;
+out vec4 color;
+
+void main()
+{
+   color = vec4(texture2D(m_Material.texture_diffuse, v_out.texCoord));
+   //color = vec4(1.0, 0.0, 0.0, 1.0);
+}

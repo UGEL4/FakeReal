@@ -1,0 +1,27 @@
+#type vertex
+#version 430 core
+
+layout(location = 0) in vec4 position;
+//layout(location = 1) in vec3 normal;
+//layout(location = 2) in vec2 texCoord;
+
+layout (std140, binding = 0) uniform Camera
+{
+	mat4 g_ViewProjection;
+};
+
+uniform mat4 worldMat;
+void main()
+{
+	gl_Position = g_ViewProjection * worldMat * position;
+}
+
+#type fragment
+#version 430 core
+
+out vec4 color;
+
+void main()
+{
+   color = vec4(1.0, 0.0, 1.0, 1.0);
+}
