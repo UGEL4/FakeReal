@@ -42,6 +42,14 @@ namespace FakeReal {
 		m_pBoneKeyArray = pBoneKeyArray;
 	}
 
+	BoneKey* Animation::GetBoneKey(size_t index) const
+	{
+		if (index < m_pBoneKeyArray.size())
+			return m_pBoneKeyArray[index];
+
+		return nullptr;
+	}
+
 	void Animation::ComputeGlobalPoseAtTime(std::vector<glm::mat4>& outPoses, Skeleton* pSkeleton, float inTime) const
 	{
 		if (outPoses.size() != m_uiNumBones)
@@ -87,6 +95,7 @@ namespace FakeReal {
 	REGISTER_PROPERTY(mTranslationArray, "Translation", Property::F_SAVE_LOAD_CLONE)
 	REGISTER_PROPERTY(mScaleArray, "Scale", Property::F_SAVE_LOAD_CLONE)
 	REGISTER_PROPERTY(mRotationArray, "Rotation", Property::F_SAVE_LOAD_CLONE)
+	REGISTER_PROPERTY(mBoneName, "BoneName", Property::F_SAVE_LOAD_CLONE)
 	END_ADD_PROPERTY
 
 	BoneKey::BoneKey()

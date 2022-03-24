@@ -1,16 +1,39 @@
 #pragma once
 #include "../Object.h"
+#include "TimeEvent.h"
 
 namespace FakeReal
 {
+	class Controller;
+	class FR_ENGINE_API StartAnimEvent : public TimeEvent
+	{
+		DECLARE_RTTI
+		DECLARE_INITIAL
+		StartAnimEvent();
+		StartAnimEvent(Controller* pController);
+	};
+	FR_TYPE_MARCO(StartAnimEvent)
+
+	class FR_ENGINE_API EndAnimEvent : public TimeEvent
+	{
+		DECLARE_RTTI
+		DECLARE_INITIAL
+		EndAnimEvent();
+		EndAnimEvent(Controller* pController);
+	};
+	FR_TYPE_MARCO(EndAnimEvent)
+
 	class FR_ENGINE_API Controller :public Object
 	{
+		DECLARE_RTTI
+		DECLARE_INITIAL_NO_CLASS_FACTORY
 	public:
 		Controller();
 		virtual ~Controller();
 
-		bool Update(double ts);
-		virtual bool UpdateEx(double ts);
+		virtual bool Update(double appTime);
+		//appTime是动画时间而非引擎的时间
+		virtual bool UpdateEx(double appTime);
 
 		enum RepeatType
 		{
@@ -25,6 +48,19 @@ namespace FakeReal
 		virtual bool SetObject(Object* pObj);
 		double GetControlTime(double dAppTime);
 		void ClearTime();
+		void AddTimeEvent(TimeEvent* pEvent);
+		void DeleteTimeEvent(TimeEvent* pEvent);
+		void TimeEventFunc(double appTime);
+		void SetEnable(bool enable);
+		void SetFrequency(double f) { m_dFrequency = f; }
+		//添加动画开始事件
+		void AddTriggerBeginStart(TriggerAnimEventType::Handler handler);
+		//添加动画停止事件
+		void AddTriggerStop(TriggerAnimEventType::Handler handler);
+		//添加动画起始事件
+		void AddTriggerStart(TriggerAnimEventType::Handler handler);
+		//添加动画结束事件
+		void AddTriggerEnd(TriggerAnimEventType::Handler handler);
 	protected:
 		unsigned int mRepeatType;
 		double m_dMinTime;//最短动画播放时间
@@ -38,7 +74,11 @@ namespace FakeReal
 		double m_dIntervalTime;//当前引擎时间间隔
 		double m_dIntervalAnimTime;//当前动画时间间隔
 		double m_dTimeSum;//运行动画时间长度
-		double m_dStartEngineTime;//开始的游戏引擎时间
+		double m_dStartSystemTime;//开始的游戏引擎时间
 		bool m_bStart;//是否已经开始运行
+		bool m_bEnable;
+		TriggerAnimEventType mTriggerBeginStart;
+		TriggerAnimEventType mTriggerStop;
+		std::vector<TimeEvent*> m_pTimeEventArray;
 	};
 }

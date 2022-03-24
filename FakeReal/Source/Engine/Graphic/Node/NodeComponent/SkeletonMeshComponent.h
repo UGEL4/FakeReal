@@ -1,6 +1,7 @@
 #pragma once
 #include "MeshNodeComponent.h"
 #include "../Model/SkeletonMeshNode.h"
+#include "../../Controller/Controller.h"
 
 namespace FakeReal {
 	class Animation;
@@ -23,6 +24,7 @@ namespace FakeReal {
 		void ComputeGlobalPos(std::vector<glm::mat4>& outPos);
 		void TestPlayAnim(class Shader* pShader);
 		void SetAnimation();
+		void PlayAnimation(const std::string& AnimName, float Ratio = 1.0f, unsigned int RepeatType = Controller::RT_WRAP);
 
 	private:
 		SkeletonMeshNodeRPtr m_pRMeshNode;

@@ -15,6 +15,8 @@ namespace FakeReal {
 
 		GeometryNode* GetGeometryNode(unsigned int uiLodLevel) const;
 
+		virtual void UpdateController(float appTime) override;
+
 	};
 	FR_TYPE_MARCO(ModelMeshNode)
 }

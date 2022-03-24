@@ -29,10 +29,7 @@ namespace FakeReal {
 
 	SkeletonMeshNode* SkeletonMeshComponent::GetSkeletonMeshNode()
 	{
-		if (!m_pRMeshNode)
-			return nullptr;
-		
-		return m_pRMeshNode->GetResource();
+		return DynamicCast<SkeletonMeshNode>(m_pMeshNode);
 	}
 
 	void SkeletonMeshComponent::SetSkeletonMeshResource(SkeletonMeshNodeRPtr pResource)
@@ -85,30 +82,32 @@ namespace FakeReal {
 				mMatrixPalette.clear();
 				mMatrixPalette.resize(size);
 			}
-			m_pAnimation->ComputeGlobalPoseAtTime(mMatrixPalette, m_pRMeshNode->GetResource()->GetSkeleton(), 0.0f);
+			//m_pAnimation->ComputeGlobalPoseAtTime(mMatrixPalette, m_pRMeshNode->GetResource()->GetSkeleton(), 0.0f);
 
-			//std::vector<glm::mat4> outPos;
-			//outPos.resize(size);
-			//ComputeGlobalPos(outPos);
-			//for (size_t i = 0; i < size; i++)
-			//{
-			//	//mMatrixPalette[i] = outPos[i] * m_pRMeshNode->GetResource()->GetSkeleton()->GetBone(i)->GetInvBindPos();
-			//	mMatrixPalette[i] = glm::mat4(1.0f);
-			//}
+			std::vector<glm::mat4> outPos;
+			outPos.resize(size);
+			ComputeGlobalPos(outPos);
+			SkeletonMeshNode* pMesh = (SkeletonMeshNode*)m_pMeshNode;
+			for (size_t i = 0; i < size; i++)
+			{
+				mMatrixPalette[i] = outPos[i] * pMesh->GetSkeleton()->GetBone(i)->GetInvBindPos();
+				//mMatrixPalette[i] = glm::mat4(1.0f);
+			}
 		}
 	}
 
 	void SkeletonMeshComponent::ComputeGlobalPos(std::vector<glm::mat4>& outPos)
 	{
-		size_t size = m_pRMeshNode->GetResource()->GetSkeleton()->GetBoneNum();
-		outPos[0] = m_pRMeshNode->GetResource()->GetSkeleton()->GetBone(0)->GetLocalMatrix();
+		SkeletonMeshNode* pMesh = (SkeletonMeshNode*)m_pMeshNode;
+		size_t size = pMesh->GetSkeleton()->GetBoneNum();
+		outPos[0] = pMesh->GetSkeleton()->GetBone(0)->GetLocalMatrix();
 		//outPos[0] = glm::mat4(1.0f);
 		for (size_t i = 1; i < size; i++)
 		{
 			glm::mat4 matrix(1.0f);
-			matrix = m_pRMeshNode->GetResource()->GetSkeleton()->GetBone(i)->GetLocalMatrix();
+			matrix = pMesh->GetSkeleton()->GetBone(i)->GetLocalMatrix();
 
-			int parentIndex = m_pRMeshNode->GetResource()->GetSkeleton()->GetBone(i)->GetParentIndex();
+			int parentIndex = pMesh->GetSkeleton()->GetBone(i)->GetParentIndex();
 			outPos[i] = outPos[parentIndex] * matrix;
 		}
 	}
@@ -124,7 +123,19 @@ namespace FakeReal {
 	{
 		Stream loadStream;
 		loadStream.NewLoad("Resources/models/silly_dancing.fbx.animation.assert");
-		m_pAnimation = (Animation*)loadStream.GetObjectByRtti(Animation::ms_Type);
+		//m_pAnimation = (Animation*)loadStream.GetObjectByRtti(Animation::ms_Type);
+		Animation* pAnim = (Animation*)loadStream.GetObjectByRtti(Animation::ms_Type);
+		AnimationRPtr pRAnim = AnimationR::Create(pAnim);
+		AnimationSet* pAnimSet = new AnimationSet;
+		pAnimSet->AddAnimation("dance", pRAnim);
+		((SkeletonMeshNode*)m_pMeshNode)->SetAnimationSet(pAnimSet);
+	}
+
+	void SkeletonMeshComponent::PlayAnimation(const std::string& AnimName, float Ratio /*= 1.0f*/, unsigned int RepeatType /*= Controller::RT_WRAP*/)
+	{
+		SkeletonMeshNode* pMesh = DynamicCast<SkeletonMeshNode>(m_pMeshNode);
+		if (pMesh)
+			pMesh->PlayAnimation(AnimName, Ratio, RepeatType);
 	}
 
 }

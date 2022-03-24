@@ -6,6 +6,7 @@
 #include "../../../Core/Events/MouseEvent.h"
 #include "../../../Core/Events/ApplicationEvent.h"
 #include "../../../Core/CoreMarco.h"
+#include "../../Controller/FreeCameraController.h"
 #include <algorithm>
 
 namespace FakeReal {
@@ -17,6 +18,7 @@ namespace FakeReal {
 
 	EditorCameraActor::EditorCameraActor()
 	{
+		m_pFreeCameraController = nullptr;
 		std::cout << "构造EditorCameraActor:" << this << std::endl;
 	}
 
@@ -28,65 +30,53 @@ namespace FakeReal {
 	void EditorCameraActor::Update(float appTime)
 	{
 		Actor::Update(appTime);
-
-		if (mForwardSpeed > 0.001f || mForwardSpeed < 0.001f)
-			MoveFowrard(mForwardSpeed * appTime);
-		if (mRightSpeed > 0.001f || mRightSpeed < 0.001f)
-			MoveRight(mRightSpeed * appTime);
-		if (mUpSpeed > 0.001f || mUpSpeed < 0.001f)
-			MoveUp(mUpSpeed * appTime);
-		Rotate();
-
 		m_pNode->UpdateAll(appTime);
 	}
 
 	void EditorCameraActor::ProcessInput()
 	{
-		mForwardSpeed = 0.0f;
-		mRightSpeed = 0.0f;
-		mUpSpeed = 0.0f;
+		m_pFreeCameraController->mForwardSpeed = 0.0f;
+		m_pFreeCameraController->mRightSpeed = 0.0f;
+		m_pFreeCameraController->mUpSpeed = 0.0f;
+		m_pFreeCameraController->m_RotateSpeed = 0.0f;
 
 		const glm::vec2& mouse{ Input::ms_pInstance->GetMouseX(), Input::ms_pInstance->GetMouseY() };
 		glm::vec2 delta = (mouse - m_InitialMousePosition) * 0.003f;
 		m_InitialMousePosition = mouse;
 		if (Input::ms_pInstance->IsMouseButtonPressed(Mouse::MC_BUTTON_MIDDLE))
 		{
-			MousePan(delta);
+			m_pFreeCameraController->MousePan(delta, PanSpeed());
 		}
 		else if (Input::ms_pInstance->IsMouseButtonPressed(Mouse::MC_BUTTON_RIGHT))
 		{
 			if (Input::ms_pInstance->IsKeyPressed(Key::KC_W))
 			{
-				//MoveFowrard(2.0f);
-				mForwardSpeed = 5.0f;
+				m_pFreeCameraController->mForwardSpeed = 5.0f;
 			}
 			if (Input::ms_pInstance->IsKeyPressed(Key::KC_S))
 			{
-				//MoveFowrard(-2.0f);
-				mForwardSpeed = -5.0f;
+				m_pFreeCameraController->mForwardSpeed = -5.0f;
 			}
 			if (Input::ms_pInstance->IsKeyPressed(Key::KC_A))
 			{
-				//MoveRight(-2.0f);
-				mRightSpeed = -5.0f;
+				m_pFreeCameraController->mRightSpeed = -5.0f;
 			}
 			if (Input::ms_pInstance->IsKeyPressed(Key::KC_D))
 			{
-				//MoveRight(2.0f);
-				mRightSpeed = 5.0f;
+				m_pFreeCameraController->mRightSpeed = 5.0f;
 			}
 			if (Input::ms_pInstance->IsKeyPressed(Key::KC_Q))
 			{
-				//MoveUp(-2.0f);
-				mUpSpeed = -5.0f;
+				m_pFreeCameraController->mUpSpeed = -5.0f;
 			}
 			if (Input::ms_pInstance->IsKeyPressed(Key::KC_E))
 			{
-				//MoveUp(2.0f);
-				mUpSpeed = 5.0f;
+				m_pFreeCameraController->mUpSpeed = 5.0f;
 			}
 			if (Input::ms_pInstance->IsMouseButtonPressed(Mouse::MC_BUTTON_LEFT))
-				MouseRotate(delta);
+			{
+				m_pFreeCameraController->m_RotateSpeed = 15.0f;
+			}
 		}
 	}
 
@@ -98,14 +88,10 @@ namespace FakeReal {
 			Camera* pCamera = (Camera*)m_pNode;
 			pCamera->CreateFromLookAt({ 0.0f, 0.0f, 1.0f }, { 0.0f, 0.0f, 0.0f });
 			pCamera->SetPerspectiveFov(45.0f, m_ViewportWidth / m_ViewportHeight, 0.1f, 1000.0f);
-		}
-	}
 
-	void EditorCameraActor::MousePan(const glm::vec2& delta)
-	{
-		std::pair<float, float> data = PanSpeed();
-		MoveRight(-delta.x * data.first * 5.f);
-		MoveUp(delta.y * data.second * 5.f);
+			m_pFreeCameraController = new FreeCameraController;
+			pCamera->AddController(m_pFreeCameraController);
+		}
 	}
 
 	std::pair<float, float> EditorCameraActor::PanSpeed() const
@@ -120,48 +106,13 @@ namespace FakeReal {
 		return { xFactor, yFactor };
 	}
 
-	void EditorCameraActor::MoveFowrard(float value)
-	{
-		glm::vec3 v = m_pNode->GetWorldTransform().GetForwardAxis();
-		glm::vec3 pos = v * value;
-		glm::vec3 p = m_pNode->GetWorldTransform().GetPosition();
-		SetWorldPos(m_pNode->GetWorldTransform().GetPosition() + pos);
-	}
-
-	void EditorCameraActor::MoveRight(float value)
-	{
-		glm::vec3 pos = m_pNode->GetWorldTransform().GetRightAxis() * value;
-		SetWorldPos(m_pNode->GetWorldTransform().GetPosition() + pos);
-	}
-
-	void EditorCameraActor::MoveUp(float value)
-	{
-		glm::vec3 pos = m_pNode->GetWorldTransform().GetUpAxis() * value;
-		SetWorldPos(m_pNode->GetWorldTransform().GetPosition() + pos);
-	}
-
-	void EditorCameraActor::MouseRotate(const glm::vec2& delta)
-	{
-		Camera* pCamera = (Camera*)m_pNode;
-		float yawSign = m_pNode->GetWorldTransform().GetUpAxis().y < 0 ? -1.0f : 1.0f;
-		float yaw =  pCamera->GetYaw() + yawSign * delta.x *m_RotateSpeed;
-		float pitch = pCamera->GetPitch() + delta.y * m_RotateSpeed;
-		pCamera->SetYaw(yaw);
-		pCamera->SetPitch(pitch);
-	}
-
 	void EditorCameraActor::MouseZoom(float delta)
 	{
+		//onevent是window的回调，时机位于actor的update之后
 		if (delta > 0.0001)
-			MoveFowrard(0.1f);
+			m_pFreeCameraController->MoveForward(0.1f);
 		else if (delta < 0.0001f)
-			MoveFowrard(-0.1f);
-	}
-
-	void EditorCameraActor::Rotate()
-	{
-		Camera* pCamera = (Camera*)m_pNode;
-		pCamera->Rotate();
+			m_pFreeCameraController->MoveForward(-0.1f);
 	}
 
 	void EditorCameraActor::OnEvent(Event& e)
@@ -197,6 +148,34 @@ namespace FakeReal {
 	{
 		Camera* pCamera = (Camera*)m_pNode;
 		return pCamera->GetProjMatrix();
+	}
+
+	float EditorCameraActor::GetYaw() const
+	{
+		if (m_pNode)
+			return ((Camera*)m_pNode)->GetYaw();
+		else
+			return 0.0f;
+	}
+
+	float EditorCameraActor::GetPitch() const
+	{
+		if (m_pNode)
+			return ((Camera*)m_pNode)->GetPitch();
+		else
+			return 0.0f;
+	}
+
+	void EditorCameraActor::SetYaw(float yaw)
+	{
+		if (m_pNode)
+			return ((Camera*)m_pNode)->SetYaw(yaw);
+	}
+
+	void EditorCameraActor::SetPitch(float pitch)
+	{
+		if (m_pNode)
+			return ((Camera*)m_pNode)->SetPitch(pitch);
 	}
 
 	bool EditorCameraActor::OnMouseScroll(MouseScrolledEvent& e)

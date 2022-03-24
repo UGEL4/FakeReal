@@ -20,6 +20,10 @@ namespace FakeReal {
 
 	void NodeComponent::UpdateNodeAll(float appTime)
 	{
+		if (appTime > 0.0f)
+		{
+			UpdateController(appTime);
+		}
 		UpdateTransform(appTime);
 		for (auto& p : m_pChildList)
 		{

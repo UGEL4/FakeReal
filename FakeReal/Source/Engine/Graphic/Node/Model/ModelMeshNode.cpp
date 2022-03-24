@@ -29,4 +29,9 @@ namespace FakeReal {
 		}
 	}
 
+	void ModelMeshNode::UpdateController(float appTime)
+	{
+		MeshNode::UpdateController(appTime);
+	}
+
 }

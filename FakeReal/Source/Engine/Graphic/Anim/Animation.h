@@ -43,6 +43,7 @@ namespace FakeReal {
 		std::vector<VectorKeyTimeInfo> mTranslationArray;
 		std::vector<VectorKeyTimeInfo> mScaleArray;
 		std::vector<QuaternionKeyTimeInfo> mRotationArray;
+		std::string mBoneName;
 
 		void GetMatrix(glm::mat4& outPose, unsigned int uiKey);
 	};
@@ -69,6 +70,7 @@ namespace FakeReal {
 		float GetFrameDuration() const { return m_fFrameDuration; }
 		float GetAnimationLength() const { return m_fLength; }
 		void SetBoneKeyArray(const std::vector<BoneKey*>& pBoneKeyArray);
+		BoneKey* GetBoneKey(size_t index) const;
 
 		// Fills the provided vector with the global (current) pose matrices for each
 		// bone at the specified time in the animation. It is expected that the time

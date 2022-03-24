@@ -73,11 +73,17 @@ namespace FakeReal {
 
 	void Camera::UpdateTransform(float appTime)
 	{
+		if (appTime > 0.0f)
+		{
+			UpdateController(appTime);
+		}
+
 		NodeComponent::UpdateTransform(appTime);
 		if (mbIsChange)
 		{
 			mViewMatrix = mWorldTransform.GetWorldToLocalMatrix();
 		}
+		mbIsChange = false;
 	}
 
 	void Camera::Rotate()

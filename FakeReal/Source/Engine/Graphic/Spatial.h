@@ -4,6 +4,7 @@
 #include "Transform.h"
 
 namespace FakeReal {
+	class Controller;
 	class FR_ENGINE_API Spatial : public Object
 	{
 		DECLARE_RTTI
@@ -26,6 +27,7 @@ namespace FakeReal {
 		virtual void SetLocalRotation(const glm::quat& rotate);
 		virtual void SetLocalScale(const glm::vec3& scale);
 		virtual void SetLocalTransform(const Transform& transform);
+		virtual void SetLocalTransform(const glm::vec3& pos, const glm::quat& rotate, const glm::vec3& scale);
 
 		virtual const glm::vec3& GetWorldTranslate();
 		virtual glm::vec3& GetWorldTranslateRef();
@@ -38,6 +40,9 @@ namespace FakeReal {
 		virtual const glm::quat& GetLocalRotateQ();
 		virtual const glm::vec3& GetLocalScale();
 
+		virtual const Transform& GetWorldTransform() const { return mWorldTransform; }
+		virtual const Transform& GetLocalTransform() const { return mLocalTransform; }
+
 
 		virtual void UpdateAll(float appTime);
 		virtual void UpdateTransform(float appTime);
@@ -45,20 +50,23 @@ namespace FakeReal {
 		void SetParent(Spatial* pParent);
 		Spatial* GetParent() const;
 
-		const Transform& GetWorldTransform() const { return mWorldTransform; }
 		glm::mat4 GetWorldMatrix() { return mWorldTransform.GetLocalToWorldMatrix(); }
 		glm::mat4 GetLocalMatrix() { return mLocalTransform.GetLocalToWorldMatrix(); }
 		void SetDynamic(bool bIsDynamic);
 		bool IsDynamic() const { return !mbStatic; }
+
+		void AddController(Controller* pController);
+		virtual void UpdateController(float appTime);
+		virtual void UpdateNodeAll(float appTime) = 0;
 	protected:
 		Spatial();
-		virtual void UpdateNodeAll(float appTime) = 0;
 	protected:
 		Transform mWorldTransform;
 		Transform mLocalTransform;
 		Spatial* m_pParent;
 		bool mbIsChange;
 		bool mbStatic;
+		std::vector<Controller*> m_pControllerArray;
 	};
 	FR_TYPE_MARCO(Spatial)
 }

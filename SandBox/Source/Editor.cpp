@@ -120,6 +120,7 @@ namespace FakeReal {
 		m_pSkMeshComp->SetWorldTranslate({ 5.0f, 0.0f, -3.0f });
 		m_pSkMeshComp->UpdateAll(0.0f);
 		m_pSkMeshComp->SetAnimation();
+		m_pSkMeshComp->PlayAnimation("dance");
 		ShaderLibrary::gs_pShaderLib->LoadShader("Shader/OpenGL/SkeletalMesh.glshader");
 	}
 
@@ -136,6 +137,7 @@ namespace FakeReal {
 		//update
 		m_pCameraActor->ProcessInput();
 		m_pCameraActor->Update(ts);
+		m_pSkMeshComp->UpdateAll(ts);
 		//m_pStaticActor->GetRootNode()->UpdateAll(ts);
 
 		//render

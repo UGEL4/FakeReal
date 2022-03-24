@@ -1,5 +1,7 @@
 #include "SkeletonMeshNode.h"
 #include "../GeometryNode.h"
+#include "../../Anim/Animation.h"
+#include "../../Anim/AnimSequenceFunc.h"
 #include "../../Stream/Property.h"
 
 namespace FakeReal {
@@ -16,12 +18,48 @@ namespace FakeReal {
 
 	SkeletonMeshNode::SkeletonMeshNode()
 	{
-
+		m_pSkeleton = nullptr;
+		m_pAnimSet = nullptr;
+		m_pAnimSequence = nullptr;
 	}
 
 	SkeletonMeshNode::~SkeletonMeshNode()
 	{
+		if (m_pAnimSequence)
+			delete m_pAnimSequence;
+		m_pAnimSequence = nullptr;
+		//TODO:delete ptr
 		std::cout << "Îö¹¹SkeletonMeshNode:" << this << std::endl;
+	}
+
+	void SkeletonMeshNode::UpdateAll(float appTime)
+	{
+		ModelMeshNode::UpdateAll(appTime);
+	}
+
+	void SkeletonMeshNode::UpdateNodeAll(float appTime)
+	{
+		if (appTime > 0.0f)
+		{
+			UpdateController(appTime);
+		}
+		UpdateTransform(appTime);
+
+		if (m_pSkeleton)
+		{
+			m_pSkeleton->UpdateNodeAll(appTime);
+		}
+
+		for (size_t i = 0; i < m_pChildList.size(); i++)
+		{
+			if (m_pChildList[i])
+				m_pChildList[i]->UpdateNodeAll(appTime);
+		}
+
+		if (mbIsChange)
+		{
+		}
+		mbIsChange = false;
 	}
 
 	bool SkeletonMeshNode::InitialDefaultState()
@@ -44,4 +82,58 @@ namespace FakeReal {
 		m_pDefault = nullptr;
 		return true;
 	}
+
+	void SkeletonMeshNode::SetSkeleton(Skeleton* pSkeleton)
+	{
+		if (pSkeleton)
+		{
+			if (m_pSkeleton)
+			{
+				m_pSkeleton->SetParent(nullptr);
+				delete m_pSkeleton;
+			}
+			m_pSkeleton = pSkeleton;
+			m_pSkeleton->SetParent(this);
+		}
+	}
+
+	void SkeletonMeshNode::SetAnimationSet(AnimationSet* pAnimSet)
+	{
+		if (m_pAnimSet == pAnimSet)
+			return;
+		m_pAnimSet = pAnimSet;
+	}
+
+	bool SkeletonMeshNode::PlayAnimation(const std::string& AnimName, float Ratio, unsigned int RepeatType)
+	{
+		if (m_pAnimSequence == nullptr)
+		{
+			m_pAnimSequence = new AnimSequenceFunc(this);
+			mbStatic = false;
+		}
+		m_pAnimSequence->m_bEnable = true;
+		m_pAnimSequence->SetAnimation(AnimName);
+		m_pAnimSequence->mRepeatType = RepeatType;
+		m_pAnimSequence->m_dFrequency = Ratio;
+		return true;
+	}
+
+	void SkeletonMeshNode::StopAnimation()
+	{
+		if (m_pAnimSequence)
+		{
+			m_pAnimSequence->m_bEnable = false;
+		}
+	}
+
+	void SkeletonMeshNode::UpdateController(float appTime)
+	{
+		ModelMeshNode::UpdateController(appTime);
+		if (m_pAnimSequence && m_pAnimSequence->m_bEnable)
+		{
+			m_pAnimSequence->Update(appTime);
+			m_pAnimSequence->UpdateBone();
+		}
+	}
+
 }

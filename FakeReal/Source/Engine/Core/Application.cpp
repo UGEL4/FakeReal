@@ -144,14 +144,14 @@ namespace FakeReal {
 				World::ms_pWorld->ProcessInput();
 
 			if (SceneManager::ms_pSceneManager)
-				SceneManager::ms_pSceneManager->Update(timestep);
+				SceneManager::ms_pSceneManager->Update(time);
 
 			if (World::ms_pWorld)
-				World::ms_pWorld->Update(timestep);
+				World::ms_pWorld->Update(time);
 
 			for (Layer* layer : mLayerStack)
 			{
-				layer->OnUpdate(timestep);
+				layer->OnUpdate(time);
 			}
 
 			m_pImguiLayer->Begin();

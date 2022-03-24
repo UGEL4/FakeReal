@@ -21,6 +21,10 @@ namespace FakeReal {
 
 	void MeshNodeComponent::UpdateNodeAll(float appTime)
 	{
+		if (appTime > 0.0f)
+		{
+			UpdateController(appTime);
+		}
 		UpdateTransform(appTime);
 		if (m_pMeshNode)
 			m_pMeshNode->UpdateAll(appTime);

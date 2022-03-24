@@ -694,7 +694,8 @@ namespace FakeReal {
 					keyData.rot = Combine.GetQ();
 					keyData.scale = Combine.GetS();
 					keyData.globalPose = pNode->EvaluateGlobalTransform(currTime);
-					keyData.keyTime = currTime.GetMilliSeconds() * 1.f;
+					//keyData.keyTime = currTime.GetMilliSeconds() * 1.f;
+					keyData.keyTime = currTime.GetSecondDouble();
 					m_Anim.data[name].push_back(keyData);
 				}
 			}
@@ -747,6 +748,7 @@ namespace FakeReal {
 			pBoneKey->mTranslationArray.clear();
 			pBoneKey->mScaleArray.clear();
 			pBoneKey->mRotationArray.clear();
+			pBoneKey->mBoneName = track.first;
 
 			for (int i = 0; i < track.second.size(); ++i)
 			{

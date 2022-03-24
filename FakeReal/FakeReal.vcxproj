@@ -135,6 +135,12 @@ copy /Y "$(SolutionDir)bin\$(Configuration)-$(Platform)\$(ProjectName)\*.dll" "$
     <ClInclude Include="Source\Engine\Core\FRMath.h" />
     <ClInclude Include="Source\Engine\Core\Window\Window.h" />
     <ClInclude Include="Source\Engine\Graphic\Anim\Animation.h" />
+    <ClInclude Include="Source\Engine\Graphic\Anim\AnimAtom.h" />
+    <ClInclude Include="Source\Engine\Graphic\Anim\AnimFunction.h" />
+    <ClInclude Include="Source\Engine\Graphic\Anim\AnimSequenceFunc.h" />
+    <ClInclude Include="Source\Engine\Graphic\Controller\Controller.h" />
+    <ClInclude Include="Source\Engine\Graphic\Controller\FreeCameraController.h" />
+    <ClInclude Include="Source\Engine\Graphic\Controller\TimeEvent.h" />
     <ClInclude Include="Source\Engine\Graphic\CustomArchiveObject.h" />
     <ClInclude Include="Source\Engine\Graphic\Material\Material.h" />
     <ClInclude Include="Source\Engine\Graphic\Node\Geometry.h" />
@@ -210,6 +216,12 @@ copy /Y "$(SolutionDir)bin\$(Configuration)-$(Platform)\$(ProjectName)\*.dll" "$
     <ClCompile Include="Source\Engine\Core\Layer\LayerStack.cpp" />
     <ClCompile Include="Source\Engine\Core\Window\Window.cpp" />
     <ClCompile Include="Source\Engine\Graphic\Anim\Animation.cpp" />
+    <ClCompile Include="Source\Engine\Graphic\Anim\AnimAtom.cpp" />
+    <ClCompile Include="Source\Engine\Graphic\Anim\AnimFunction.cpp" />
+    <ClCompile Include="Source\Engine\Graphic\Anim\AnimSequenceFunc.cpp" />
+    <ClCompile Include="Source\Engine\Graphic\Controller\Controller.cpp" />
+    <ClCompile Include="Source\Engine\Graphic\Controller\FreeCameraController.cpp" />
+    <ClCompile Include="Source\Engine\Graphic\Controller\TimeEvent.cpp" />
     <ClCompile Include="Source\Engine\Graphic\CustomArchiveObject.cpp" />
     <ClCompile Include="Source\Engine\Graphic\Material\Material.cpp" />
     <ClCompile Include="Source\Engine\Graphic\Node\Geometry.cpp" />

@@ -59,9 +59,9 @@ namespace FakeReal {
 		glm::mat4& GetProjMatrix() { return mProjMatrix; }
 		glm::mat4 GetViewProjMatrix() const { return mProjMatrix * mViewMatrix; }
 
-		void SetYaw(float val) { mRotY = val; }
-		void SetPitch(float val) { mRotX = val; }
-		void SetRoll(float val) { mRotZ = val; }
+		void SetYaw(float val) { mbIsChange = true;  mRotY = val; }
+		void SetPitch(float val) { mbIsChange = true;  mRotX = val; }
+		void SetRoll(float val) { mbIsChange = true;  mRotZ = val; }
 		float GetYaw() const { return mRotY; }
 		float GetPitch() const { return mRotX; }
 		float GetRoll() const { return mRotZ; }

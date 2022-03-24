@@ -102,6 +102,7 @@ namespace FakeReal {
 	class DelegateEvent
 	{
 	public:
+		typedef Delegate<RetValueType, ParamType...> Handler;
 		DelegateEvent()
 		{
 			mDelegateList.clear();
@@ -175,6 +176,6 @@ namespace FakeReal {
 			}
 		}
 	private:
-		std::vector<Delegate<RetValueType, ParamType...>> mDelegateList;
+		std::vector<Handler> mDelegateList;
 	};
 }

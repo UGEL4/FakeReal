@@ -273,6 +273,24 @@
     <ClInclude Include="Source\Engine\Core\Events\Delegate.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Engine\Graphic\Controller\Controller.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Engine\Graphic\Controller\TimeEvent.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Engine\Graphic\Anim\AnimAtom.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Engine\Graphic\Anim\AnimFunction.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Engine\Graphic\Anim\AnimSequenceFunc.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Engine\Graphic\Controller\FreeCameraController.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Engine\Core\Application.cpp">
@@ -480,6 +498,24 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="Source\Engine\Graphic\Anim\Animation.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Engine\Graphic\Controller\Controller.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Engine\Graphic\Controller\TimeEvent.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Engine\Graphic\Anim\AnimAtom.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Engine\Graphic\Anim\AnimFunction.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Engine\Graphic\Anim\AnimSequenceFunc.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Engine\Graphic\Controller\FreeCameraController.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

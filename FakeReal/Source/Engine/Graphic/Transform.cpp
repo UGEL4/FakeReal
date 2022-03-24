@@ -1,5 +1,6 @@
 #include "Transform.h"
 #include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtx/matrix_decompose.hpp>
 #include <glm/gtx/euler_angles.hpp>
 namespace FakeReal {
 
@@ -175,8 +176,8 @@ namespace FakeReal {
 	void Transform::Product(const Transform& t1, const Transform& t2)
 	{
 		glm::mat4 mat = t2.GetLocalToWorldMatrix() * t1.GetLocalToWorldMatrix();
-
-		m_Position = mat[3];
+		SetMatrix(mat);
+		/*m_Position = mat[3];
 
 		glm::vec3 scale;
 		glm::mat3 RMat;
@@ -190,13 +191,14 @@ namespace FakeReal {
 		m_Scale = scale;
 
 		m_RotationQ = glm::quat_cast(RMat);
-		m_Rotation = glm::eulerAngles(m_RotationQ);
+		m_Rotation = glm::eulerAngles(m_RotationQ);*/
 	}
 
 	void Transform::Inverse(Transform& out) const
 	{
 		glm::mat4 invMat = GetWorldToLocalMatrix();
-		out.m_Position = invMat[3];
+		out.SetMatrix(invMat);
+		/*out.m_Position = invMat[3];
 		glm::vec3 scale;
 		glm::mat3 RMat;
 		for (int i = 0; i < 3; i++)
@@ -209,11 +211,16 @@ namespace FakeReal {
 		out.m_Scale = scale;
 
 		out.m_RotationQ = glm::quat_cast(RMat);
-		out.m_Rotation = glm::eulerAngles(out.m_RotationQ);
+		out.m_Rotation = glm::eulerAngles(out.m_RotationQ);*/
 	}
 
 	void Transform::SetMatrix(const glm::mat4& matrix)
 	{
+		/*glm::vec3 skew;
+		glm::vec4 prespective;
+		glm::decompose(matrix, m_Scale, m_RotationQ, m_Position, skew, prespective);
+		m_RotationQ = glm::conjugate(m_RotationQ);
+		m_Rotation = glm::eulerAngles(m_RotationQ);*/
 		m_Position = matrix[3];
 
 		glm::vec3 scale;
@@ -221,8 +228,10 @@ namespace FakeReal {
 		for (int i = 0; i < 3; i++)
 		{
 			glm::vec3 Col = matrix[i];
-			scale[i] = Col.length();
-			RMat[i] = { Col.x / scale[i], Col.y / scale[i], Col.z / scale[i] };
+			//scale[i] = Col.length();
+			scale[i] = sqrt(Col[0] * Col[0] + Col[1] * Col[1] + Col[2] * Col[2]);
+			//RMat[i] = { Col.x / scale[i], Col.y / scale[i], Col.z / scale[i] };
+			RMat[i] = Col / scale[i];
 		}
 
 		m_Scale = scale;

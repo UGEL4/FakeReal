@@ -20,14 +20,8 @@ namespace FakeReal
 		virtual void ProcessInput() override;
 		virtual void CreateDefaultComponent() override;
 
-		void MousePan(const glm::vec2& delta);
 		std::pair<float, float> PanSpeed() const;
-		void MoveFowrard(float value);
-		void MoveRight(float value);
-		void MoveUp(float value);
-		void MouseRotate(const glm::vec2& delta);
 		void MouseZoom(float delta);
-		void Rotate();
 
 		void OnEvent(Event& e);
 		void SetViewPortSize(float width, float height);
@@ -35,6 +29,10 @@ namespace FakeReal
 		glm::mat4 GetViewProjMatrix() const;
 		const glm::mat4& GetViewMatrix() const;
 		const glm::mat4& GetProjMatrix() const;
+		float GetYaw() const;
+		float GetPitch() const;
+		void SetYaw(float yaw);
+		void SetPitch(float pitch);
 
 	private:
 		bool OnMouseScroll(MouseScrolledEvent& e);
@@ -42,10 +40,8 @@ namespace FakeReal
 
 		glm::vec2 m_InitialMousePosition = { 0.0f, 0.0f };
 		float m_ViewportWidth = 1280, m_ViewportHeight = 720;
-		float m_RotateSpeed = 15.0f;
-		float mForwardSpeed = 0.0f;
-		float mRightSpeed = 0.0f;
-		float mUpSpeed = 0.0f;
+
+		class FreeCameraController* m_pFreeCameraController;
 	};
 	FR_TYPE_MARCO(EditorCameraActor)
 }

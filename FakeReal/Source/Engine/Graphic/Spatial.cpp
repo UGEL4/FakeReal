@@ -1,15 +1,16 @@
 #include "Spatial.h"
 #include "Stream/Property.h"
+#include "Controller/Controller.h"
 namespace FakeReal
 {
 	IMPLEMENT_RTTI_NO_CREATE_FUNCTION(Spatial, Object);
 	IMPLEMENT_INITIAL_NO_CLASS_FACTORY_BEGIN(Spatial)
 	IMPLEMENT_INITIAL_NO_CLASS_FACTORY_END;
 	BEGIN_ADD_PROPERTY(Spatial, Object)
-	REGISTER_PROPERTY(mWorldTransform, "World Transform", Property::F_SAVE_LOAD)
-	REGISTER_PROPERTY(mLocalTransform, "Local Transform", Property::F_SAVE_LOAD)
-	REGISTER_PROPERTY(m_pParent, "Parent", Property::F_SAVE_LOAD)
-	REGISTER_PROPERTY(mbStatic, "Static", Property::F_SAVE_LOAD)
+	REGISTER_PROPERTY(mWorldTransform, "World Transform", Property::F_SAVE_LOAD_CLONE)
+	REGISTER_PROPERTY(mLocalTransform, "Local Transform", Property::F_SAVE_LOAD_CLONE)
+	REGISTER_PROPERTY(m_pParent, "Parent", Property::F_SAVE_LOAD_CLONE)
+	REGISTER_PROPERTY(mbStatic, "Static", Property::F_SAVE_LOAD_CLONE)
 	END_ADD_PROPERTY
 
 	Spatial::Spatial()
@@ -19,17 +20,14 @@ namespace FakeReal
 		mLocalTransform = Transform({ 1.0f, 1.0f, 1.0f }, { 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f });
 		mbIsChange = true;
 		mbStatic = false;
+		m_pControllerArray.clear();
 		//std::cout << "¹¹ÔìSpatial:" << this << std::endl;
-	}
-
-	void Spatial::UpdateNodeAll(float appTime)
-	{
-
 	}
 
 	Spatial::~Spatial()
 	{
 		m_pParent = nullptr;
+		//TODO:É¾³ýcontroller
 		//std::cout << "Îö¹¹Spatial:" << this << std::endl;
 	}
 
@@ -164,6 +162,15 @@ namespace FakeReal
 		UpdateAll(0.0f);
 	}
 
+	void Spatial::SetLocalTransform(const glm::vec3& pos, const glm::quat& rotate, const glm::vec3& scale)
+	{
+		mbIsChange = true;
+		mLocalTransform.SetPosition(pos);
+		mLocalTransform.SetRotation(rotate);
+		mLocalTransform.SetScale(scale);
+		UpdateAll(0.0f);
+	}
+
 	const glm::vec3& Spatial::GetWorldTranslate()
 	{
 		return mWorldTransform.GetPosition();
@@ -250,6 +257,25 @@ namespace FakeReal
 	void Spatial::SetDynamic(bool bIsDynamic)
 	{
 		mbStatic = !bIsDynamic;
+	}
+
+	void Spatial::AddController(Controller* pController)
+	{
+		for (size_t i = 0; i < m_pControllerArray.size(); i++)
+		{
+			if (pController == m_pControllerArray[i])
+				return;
+		}
+		m_pControllerArray.emplace_back(pController);
+	}
+
+	void Spatial::UpdateController(float appTime)
+	{
+		for (size_t i = 0; i < m_pControllerArray.size(); i++)
+		{
+			m_pControllerArray[i]->SetObject(this);
+			m_pControllerArray[i]->Update(appTime);
+		}
 	}
 
 }
