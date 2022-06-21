@@ -4,6 +4,8 @@
 #include "../../Graphic/Stream/Property.h"
 #include <stb_image.h>
 #include <iostream>
+#include <fstream>
+#include "nv_dds.h"
 
 namespace FakeReal {
 	//Texture
@@ -26,6 +28,7 @@ namespace FakeReal {
 	END_ADD_PROPERTY
 
 	Texture2D::Texture2D(const std::string& file, unsigned int width, unsigned int height, TEXTURE_FORMAT format)
+		: m_bIsCompressed(false)
 	{
 		mPath = file;
 		mWidth = width;
@@ -37,8 +40,21 @@ namespace FakeReal {
 	}
 
 	Texture2D::Texture2D()
+		: m_bIsCompressed(false)
 	{
 		std::cout << "¹¹ÔìTexture2D:" << this << std::endl;
+	}
+
+	Texture2D::Texture2D(const std::string& file, bool compress, bool flip)
+		: mPath(file)
+		, m_bIsCompressed(compress)
+	{
+		nv_dds::CDDSImage image;
+		image.load(file, flip);
+		mWidth = image.get_width();
+		mHeight = image.get_height();
+		mDataBuffSize = image.get_size();
+		m_pDataBuffer = image;
 	}
 
 	Texture2D::~Texture2D()
@@ -46,7 +62,7 @@ namespace FakeReal {
 		std::cout << "Îö¹¹Texture2D:" << this << std::endl;
 	}
 
-	LoadImageData Texture2D::LoadImage(const std::string& file, bool flip_v /*= true*/)
+	LoadImageData Texture2D::LoadImage(const std::string& file, bool flip_v)
 	{
 		LoadImageData LoadData;
 		LoadData.data = nullptr;
@@ -72,6 +88,36 @@ namespace FakeReal {
 			std::cout << "stbi_load result: data is nullptr, file : " << file << std::endl;
 		}
 		return LoadData;
+	}
+
+	void Texture2D::LoadImageCompressAndSaveDDS(const std::string& file, const std::string& outFile, FRNVTTCompression::CompressFormat format, bool forceUseCpu, bool flip_v)
+	{
+		FRNVTTCompression compression;
+		compression.Setup(format, forceUseCpu);
+		compression.Compress(file);
+		if (compression.IsSuccess())
+		{
+			SaveDDS(outFile, (const char*)compression.GetCompressData(), compression.GetDataSize());
+		}
+	}
+
+	void Texture2D::SaveDDS(const std::string& file, const char* data, unsigned int size)
+	{
+		if (!data || !size)
+		{
+			return;
+			std::cout << "dds save error: null data or 0 size" << std::endl;
+		}
+		std::ofstream of(file.c_str(), std::ios::binary);
+		if (of.is_open())
+		{
+			of.write(data, size);
+			of.close();
+		}
+		else
+		{
+			std::cout << "Save error : file = " << file << std::endl;
+		}
 	}
 
 }

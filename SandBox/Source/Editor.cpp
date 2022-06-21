@@ -80,12 +80,14 @@ namespace FakeReal {
 		//测试模型
 		Stream loadStream;
 		loadStream.NewLoad("Resources/models/silly_dancing.fbx.static_model.assert");
+		//loadStream.NewLoad("Resources/models/Sponza.fbx.static_model.assert");
 		//loadStream.NewLoad("Resources/models/3d_scene.static_model.assert");
 		//loadStream.NewLoad("Resources/models/Apocalypse.fbx.static_model.assert");
 		StaticMeshNode* pMeshNode = (StaticMeshNode*)loadStream.GetObjectByRtti(StaticMeshNode::ms_Type);
 
 		StaticMeshNodeRPtr StaticMeshResource = ResourceProxy<StaticMeshNode>::Create(pMeshNode);
 		m_pStaticActor->SetStaticMeshResource(StaticMeshResource);
+		m_pStaticActor->SetWorldScale({ 0.05f, 0.05f, 0.05f });
 
 		/*LoadImageData data = Texture2D::LoadImage("Resources/pic.jpeg", true);
 		if (data.data)
@@ -122,6 +124,9 @@ namespace FakeReal {
 		m_pSkMeshComp->SetAnimation();
 		m_pSkMeshComp->PlayAnimation("dance");
 		ShaderLibrary::gs_pShaderLib->LoadShader("Shader/OpenGL/SkeletalMesh.glshader");
+
+		//test save dds
+		Texture2D::LoadImageCompressAndSaveDDS("Resources/Stormtrooper_D.png", "Resources/models/Textures/Stormtrooper_D.dds", FRNVTTCompression::CF_BC3);
 	}
 
 	void GameEditor::OnUpdate(float ts)
@@ -162,19 +167,19 @@ namespace FakeReal {
 		}
 		//m_pShader->Unbind();
 
-		Shader* pShaderSkeletal = ShaderLibrary::gs_pShaderLib->Get("SkeletalMesh");
-		pShaderSkeletal->Bind();
-		pShaderSkeletal->SetInt("m_Material.texture_diffuse", 0);
-		pShaderSkeletal->SetMatrix4("worldMat", &m_pSkMeshComp->GetWorldMatrix()[0][0]);
-		GeoNum = m_pSkMeshComp->GetSkeletonMeshNode()->GetGeometryNode(0)->GetChildNum();
-		for (unsigned int i = 0; i < GeoNum; i++)
-		{
-			m_pTexture->BindTexture(0);
-			Geometry* pGeo = m_pSkMeshComp->GetSkeletonMeshNode()->GetGeometryNode(0)->GetGeometry(i);
-			m_pSkMeshComp->ComputeMatrixPalette();
-			m_pSkMeshComp->TestPlayAnim(pShaderSkeletal);
-			Renderer::Submit(*pShaderSkeletal, *(pGeo->GetVertexArray()), pGeo->GetIndexCount());
-		}
+		//Shader* pShaderSkeletal = ShaderLibrary::gs_pShaderLib->Get("SkeletalMesh");
+		//pShaderSkeletal->Bind();
+		//pShaderSkeletal->SetInt("m_Material.texture_diffuse", 0);
+		//pShaderSkeletal->SetMatrix4("worldMat", &m_pSkMeshComp->GetWorldMatrix()[0][0]);
+		//GeoNum = m_pSkMeshComp->GetSkeletonMeshNode()->GetGeometryNode(0)->GetChildNum();
+		//for (unsigned int i = 0; i < GeoNum; i++)
+		//{
+		//	m_pTexture->BindTexture(0);
+		//	Geometry* pGeo = m_pSkMeshComp->GetSkeletonMeshNode()->GetGeometryNode(0)->GetGeometry(i);
+		//	m_pSkMeshComp->ComputeMatrixPalette();
+		//	m_pSkMeshComp->TestPlayAnim(pShaderSkeletal);
+		//	Renderer::Submit(*pShaderSkeletal, *(pGeo->GetVertexArray()), pGeo->GetIndexCount());
+		//}
 
 		//天空盒子
 		Shader* pShaderSky = ShaderLibrary::gs_pShaderLib->Get("SkyBox");

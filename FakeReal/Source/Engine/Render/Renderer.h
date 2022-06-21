@@ -4,6 +4,7 @@
 #include "RenderAPI.h"
 #include "Buffer/UniformBuffer.h"
 #include "../Core/CoreMarco.h"
+#include <glad/glad.h>
 namespace FakeReal {
 
 	struct CameraData
@@ -86,9 +87,12 @@ namespace FakeReal {
 		static VertexBufferID* CreateVertexBufferID(const VertexBuffer* pVB, bool BatchVertex = false);
 		static VertexArrayID* CreateVertexArrayID();
 		static IndexBufferID* CreateIndexBufferID(const IndexBuffer* pIB);
+		
+		static uint16_t GetTextureFormat(unsigned int originalFormat);
 
 	private:
 		Renderer() {}
+		static uint16_t GL_GetTextureFormat(GLenum format);
 
 	public:
 		static CameraData s_CameraData;

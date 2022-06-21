@@ -4,6 +4,7 @@
 #include "../../Graphic/Resource/Resource.h"
 #include "../../Graphic/Object.h"
 #include "../../Core/CoreMarco.h"
+#include "../../Core/FRNVTTCompression.h"
 
 namespace FakeReal {
 
@@ -21,7 +22,7 @@ namespace FakeReal {
 			TT_MAX
 		}TextureType;
 
-		typedef enum  class TEXTURE_FORMAT : unsigned short
+		typedef enum TEXTURE_FORMAT : unsigned short
 		{
 			TF_R8G8B8,
 			TF_R8G8B8A8,
@@ -73,6 +74,9 @@ namespace FakeReal {
 		unsigned char* m_pDataBuffer;//贴图数据
 		unsigned int mDataBuffSize;//数据大小
 
+	private:
+
+
 	};
 	FR_TYPE_MARCO(Texture)
 
@@ -93,15 +97,19 @@ namespace FakeReal {
 	public:
 		Texture2D();
 		Texture2D(const std::string& file, unsigned int width, unsigned int height, TEXTURE_FORMAT format);
+		Texture2D(const std::string& file, bool compress, bool flip);
 		virtual ~Texture2D();
 
 		virtual const std::string& GetPath() const override { return mPath; }
 		virtual TextureType GetTextureType() const override { return TEXTURE_TYPE::TT_2D; }
 
 		static LoadImageData LoadImage(const std::string& file, bool flip_v = true);
+		static void LoadImageCompressAndSaveDDS(const std::string& file, const std::string& outFile, FRNVTTCompression::CompressFormat format, bool forceUseCpu = true, bool flip_v = true);
 
 	private:
+		static void SaveDDS(const std::string& file, const char* data, unsigned int size);
 		std::string mPath;
+		bool m_bIsCompressed;
 
 	};
 	FR_TYPE_MARCO(Texture2D);

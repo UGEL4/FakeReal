@@ -5,6 +5,7 @@
 #include "Buffer/IndexBuffer.h"
 #include "RenderCommand.h"
 #include "RenderResource/RenderResource.h"
+#include "Texture/FRTexture.h"
 
 namespace FakeReal
 {
@@ -157,6 +158,31 @@ namespace FakeReal
 		}
 		}
 		return nullptr;
+	}
+
+	uint16_t Renderer::GetTextureFormat(unsigned int originalFormat)
+	{
+		switch (GetAPI())
+		{
+		case RenderAPI::API::OpenGL:
+		{
+			return GL_GetTextureFormat(originalFormat);
+		}
+		}
+		assert(0);
+		return 0;
+	}
+
+	uint16_t Renderer::GL_GetTextureFormat(GLenum format)
+	{
+		switch (format)
+		{
+		case GL_RGB8: return Texture::TextureFormat::TF_R8G8B8;
+		case GL_RGBA: return Texture::TextureFormat::TF_R8G8B8A8;
+		//case GL_TEXT
+		}
+		assert(0);
+		return 0;
 	}
 
 }

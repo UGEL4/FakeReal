@@ -57,13 +57,13 @@
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>false</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <AdditionalIncludeDirectories>$(SolutionDir)IMGUI\Imgui;$(SolutionDir)$(ProjectName)\External\stb_image;$(SolutionDir)$(ProjectName)\External\glm;$(SolutionDir)$(ProjectName)\External\GLFW\include;$(SolutionDir)$(ProjectName)\External\glad\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)$(ProjectName)\External\nvtt\include;$(SolutionDir)IMGUI\Imgui;$(SolutionDir)$(ProjectName)\External\stb_image;$(SolutionDir)$(ProjectName)\External\glm;$(SolutionDir)$(ProjectName)\External\GLFW\include;$(SolutionDir)$(ProjectName)\External\glad\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>BUILD_ENGINE_DLL;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <AdditionalLibraryDirectories>$(SolutionDir)$(ProjectName)\Lib\;$(SolutionDir)$(ProjectName)\External\GLFW\Lib\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>IMGUI.lib;glfw3.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>nvtt30106.lib;IMGUI.lib;glfw3.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>copy /Y "$(SolutionDir)bin\$(Configuration)-$(Platform)\$(ProjectName)\*.lib" "$(SolutionDir)$(ProjectName)\Lib\"
@@ -87,7 +87,7 @@ copy /Y "$(SolutionDir)bin\$(Configuration)-$(Platform)\$(ProjectName)\*.dll" "$
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>false</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <AdditionalIncludeDirectories>$(SolutionDir)IMGUI\Imgui;$(SolutionDir)$(ProjectName)\External\stb_image;$(SolutionDir)$(ProjectName)\External\glm;$(SolutionDir)$(ProjectName)\External\GLFW\include;$(SolutionDir)$(ProjectName)\External\glad\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)$(ProjectName)\External\nvtt\include;$(SolutionDir)IMGUI\Imgui;$(SolutionDir)$(ProjectName)\External\stb_image;$(SolutionDir)$(ProjectName)\External\glm;$(SolutionDir)$(ProjectName)\External\GLFW\include;$(SolutionDir)$(ProjectName)\External\glad\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>BUILD_ENGINE_DLL;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
@@ -95,7 +95,7 @@ copy /Y "$(SolutionDir)bin\$(Configuration)-$(Platform)\$(ProjectName)\*.dll" "$
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalLibraryDirectories>$(SolutionDir)$(ProjectName)\Lib\;$(SolutionDir)$(ProjectName)\External\GLFW\Lib\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>IMGUI.lib;glfw3.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>nvtt30106.lib;IMGUI.lib;glfw3.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>copy /Y "$(SolutionDir)bin\$(Configuration)-$(Platform)\$(ProjectName)\*.lib" "$(SolutionDir)$(ProjectName)\Lib\"
@@ -115,6 +115,9 @@ copy /Y "$(SolutionDir)bin\$(Configuration)-$(Platform)\$(ProjectName)\*.dll" "$
     <ClInclude Include="External\glad\include\KHR\khrplatform.h" />
     <ClInclude Include="External\GLFW\include\GLFW\glfw3.h" />
     <ClInclude Include="External\GLFW\include\GLFW\glfw3native.h" />
+    <ClInclude Include="External\nvtt\include\nvtt\nvtt.h" />
+    <ClInclude Include="External\nvtt\include\nvtt\nvtt_lowlevel.h" />
+    <ClInclude Include="External\nvtt\include\nvtt\nvtt_wrapper.h" />
     <ClInclude Include="External\stb_image\stb_image.h" />
     <ClInclude Include="Source\Engine\Core\Application.h" />
     <ClInclude Include="Source\Engine\Core\CoreMarco.h" />
@@ -125,6 +128,7 @@ copy /Y "$(SolutionDir)bin\$(Configuration)-$(Platform)\$(ProjectName)\*.dll" "$
     <ClInclude Include="Source\Engine\Core\Events\Event.h" />
     <ClInclude Include="Source\Engine\Core\Events\KeyEvent.h" />
     <ClInclude Include="Source\Engine\Core\Events\MouseEvent.h" />
+    <ClInclude Include="Source\Engine\Core\FRNVTTCompression.h" />
     <ClInclude Include="Source\Engine\Core\Input\Input.h" />
     <ClInclude Include="Source\Engine\Core\Input\KeyCode.h" />
     <ClInclude Include="Source\Engine\Core\Input\MouseCode.h" />
@@ -201,6 +205,7 @@ copy /Y "$(SolutionDir)bin\$(Configuration)-$(Platform)\$(ProjectName)\*.dll" "$
     <ClInclude Include="Source\Engine\Render\RenderState\SamplerState.h" />
     <ClInclude Include="Source\Engine\Render\Shader\Shader.h" />
     <ClInclude Include="Source\Engine\Render\Texture\FRTexture.h" />
+    <ClInclude Include="Source\Engine\Render\Texture\nv_dds.h" />
     <ClInclude Include="Source\Engine\Render\Texture\TextureAllState.h" />
     <ClInclude Include="Source\Engine\Render\Texture\TextureCubeMap.h" />
   </ItemGroup>
@@ -209,6 +214,7 @@ copy /Y "$(SolutionDir)bin\$(Configuration)-$(Platform)\$(ProjectName)\*.dll" "$
     <ClCompile Include="External\stb_image\stb_image.cpp" />
     <ClCompile Include="Source\Engine\Core\Application.cpp" />
     <ClCompile Include="Source\Engine\Core\EngineMain.cpp" />
+    <ClCompile Include="Source\Engine\Core\FRNVTTCompression.cpp" />
     <ClCompile Include="Source\Engine\Core\Input\Input.cpp" />
     <ClCompile Include="Source\Engine\Core\Input\OpenGLInput.cpp" />
     <ClCompile Include="Source\Engine\Core\Layer\ImguiLayer.cpp" />
@@ -278,6 +284,7 @@ copy /Y "$(SolutionDir)bin\$(Configuration)-$(Platform)\$(ProjectName)\*.dll" "$
     <ClCompile Include="Source\Engine\Render\RenderState\SamplerState.cpp" />
     <ClCompile Include="Source\Engine\Render\Shader\Shader.cpp" />
     <ClCompile Include="Source\Engine\Render\Texture\FRTexture.cpp" />
+    <ClCompile Include="Source\Engine\Render\Texture\nv_dds.cpp" />
     <ClCompile Include="Source\Engine\Render\Texture\TextureAllState.cpp" />
     <ClCompile Include="Source\Engine\Render\Texture\TextureCubeMap.cpp" />
   </ItemGroup>
